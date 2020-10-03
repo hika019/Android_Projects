@@ -12,11 +12,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        performRegister()
+
 
         register_button_register.setOnClickListener {
-
-
+            performRegister()
 
         }
 
@@ -46,14 +45,16 @@ class MainActivity : AppCompatActivity() {
         //create a user email and password by Firebase Authentication
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                if(it.isSuccessful) return@addOnCompleteListener
+                if(!it.isSuccessful) return@addOnCompleteListener
 
                 //else if successful
-
                 Log.d("Main", "Successfully created user with uid: ${it.result?.user?.uid}")
             }
             .addOnFailureListener {
                 Log.d("Main", "Failed to create user: ${it.message}")
+                Toast.makeText(this,"Failed to create user: ${it.message}", Toast.LENGTH_LONG).show()
+
+
             }
     }
 }
