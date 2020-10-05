@@ -2,7 +2,6 @@ package com.example.kotlinmessenger
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -78,16 +77,22 @@ class RegisterActivity : AppCompatActivity() {
         Log.d("RegisterActivity", "Email is: "+ email)
         Log.d("RegisterActivity", "Password is: $password")
 
+        if (selectedPhotoUri == null || username_edittext_register.text.toString().isEmpty()) {
+            Toast.makeText(this,"Please select to Photo or enter text in username", Toast.LENGTH_SHORT).show()
+            return
+        }
+
 
         //create a user email and password by Firebase Authentication
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+
             .addOnCompleteListener {
                 if(!it.isSuccessful) return@addOnCompleteListener
 
                 //else if successful
                 Log.d("RegisterActivity", "Successfully created user with uid: ${it.result?.user?.uid}")
 
-                uploadImagetoFirebaseStoreage()
+                uploadImagetoFirebaseStorage()
             }
             .addOnFailureListener {
                 Log.d("RegisterActivity", "Failed to create user: ${it.message}")
@@ -97,7 +102,7 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    private fun uploadImagetoFirebaseStoreage() {
+    private fun uploadImagetoFirebaseStorage() {
         if (selectedPhotoUri == null) return
         val filename = UUID.randomUUID().toString()
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
@@ -124,6 +129,10 @@ class RegisterActivity : AppCompatActivity() {
         ref.setValue(user)
             .addOnSuccessListener {
                 Log.d("RegisterActivity", "Finally we saved the user to Firebase Database")
+
+                val intent = Intent(this, LatestMessageActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
     }
 
