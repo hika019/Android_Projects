@@ -18,6 +18,7 @@ class LatestMessageActivity : AppCompatActivity() {
 
     }
 
+
     private fun verifyUserIsLoggedIn(){
         val uid = FirebaseAuth.getInstance().uid
         if(uid == null) {
@@ -31,7 +32,8 @@ class LatestMessageActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId){
             R.id.menu_new_message -> {
-
+                val intent = Intent(this, NewMessageActivity::class.java)
+                startActivity(intent)
             }
             R.id.menu_sin_out -> {
                 FirebaseAuth.getInstance().signOut()
