@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import com.example.kotlinmessenger.R
 import com.example.kotlinmessenger.models.User
-//import com.example.kotlinmessenger.registerlogin.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
